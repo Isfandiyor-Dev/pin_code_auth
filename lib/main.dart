@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pin_code_auth/ui/biometric/biometric_auth.dart';
+import 'package:pin_code_auth/ui/pin_code/pin_code.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,10 +11,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+        backgroundColor: Colors.teal[100],
+        body: const FractionallySizedBox(
+          widthFactor: 1,
+          // You can also checkout the [PinputBuilderExample]
+          child: Center(child: AuthButton()),
         ),
       ),
     );
