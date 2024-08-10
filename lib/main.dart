@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pin_code_auth/ui/biometric/biometric_auth.dart';
 import 'package:pin_code_auth/ui/pin_code/pin_code.dart';
 
 void main() {
@@ -18,7 +17,7 @@ class MainApp extends StatelessWidget {
         body: const FractionallySizedBox(
           widthFactor: 1,
           // You can also checkout the [PinputBuilderExample]
-          child: Center(child: AuthButton()),
+          child: Center(child: PinCodePage()),
         ),
       ),
     );

@@ -1,15 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:pin_code_auth/ui/home_screen.dart';
 import 'package:pinput/pinput.dart';
 
-class PinputExample extends StatefulWidget {
-  const PinputExample({super.key});
+class PinCodePage extends StatefulWidget {
+  const PinCodePage({super.key});
 
   @override
-  State<PinputExample> createState() => _PinputExampleState();
+  State<PinCodePage> createState() => _PinCodePageState();
 }
 
-class _PinputExampleState extends State<PinputExample> {
+class _PinCodePageState extends State<PinCodePage> {
   late final TextEditingController pinController;
   late final FocusNode focusNode;
   late final GlobalKey<FormState> formKey;
@@ -25,6 +27,37 @@ class _PinputExampleState extends State<PinputExample> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       focusNode.requestFocus();
     });
+
+    _authenticate();
+  }
+
+  final LocalAuthentication auth = LocalAuthentication();
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticate(
+        localizedReason: 'Iltimos, identifikatsiyadan o\'ting',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    if (authenticated) {
+      Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => const HomeScreen(),
+        ),
+      );
+      print('Authentication successful');
+    } else {
+      print('Authentication failed');
+    }
   }
 
   @override
@@ -118,6 +151,25 @@ class _PinputExampleState extends State<PinputExample> {
               ),
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 30,
+                ),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.tealAccent,
+                  onPressed: _authenticate,
+                  child: const Icon(
+                    Icons.fingerprint_rounded,
+                    size: 40,
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
